@@ -42,4 +42,3 @@ jobs:
         title: "Development Build"
         files: |
             dist/activemon.exe
-            activemon.exe

@@ -64,7 +64,7 @@ def get_idle_time() -> float:
 def make_user_active(button: str = "capslock") -> None:
     for _ in range(0, 2):
         pyautogui.press(button, interval=1)
-        pyautogui.press("button", interval=1)
+        pyautogui.press(button, interval=1)
 
 
 def main() -> None:

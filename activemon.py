@@ -10,7 +10,8 @@ __status__ = "Development"
 __version__ = "0.1"
 
 
-def get_logger() -> logging.Logger:
+def get_logger(debug: bool = False) -> logging.Logger:
+    level = logging.DEBUG if debug else logging.INFO
     simple_formatter = logging.Formatter(
         "[%(asctime)s] %(levelname)s %(message)s", "%Y-%m-%d %H:%M:%S"
     )
@@ -18,13 +19,13 @@ def get_logger() -> logging.Logger:
     console_handler.setFormatter(simple_formatter)
 
     logger = logging.getLogger(__name__)
-    logger.setLevel(logging.INFO)
+    logger.setLevel(level)
     logger.addHandler(console_handler)
     logger.propagate = False
     return logger
 
 
-def parse_argument() -> argparse.ArgumentParser:
+def get_argument_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
         usage="%(prog)s [OPTIONS] [FILE]...",
         description="Monitors user idle and prevents screen from locking",
@@ -53,6 +54,14 @@ def parse_argument() -> argparse.ArgumentParser:
         default="capslock",
         help="Button to press to make system in active state. (Default is capslock).",
     )
+    parser.add_argument(
+        "-d",
+        "--debug",
+        dest="debug",
+        action="store_true",
+        help="Enables debug mode for verbose logs.",
+    )
+    parser.set_defaults(debug=False)
 
     return parser
 
@@ -68,14 +77,14 @@ def make_user_active(button: str = "capslock") -> None:
 
 
 def main() -> None:
-    logger = get_logger()
-    parser = parse_argument()
+    parser = get_argument_parser()
     args = parser.parse_args()
+    logger = get_logger(debug=args.debug)
     print("Monitoring started, press CTRL + C to exit")
     while True:
         time.sleep(args.interval)
         idle_time = get_idle_time()
-        logger.info("Idle time is %s seconds", idle_time)
+        logger.debug("Idle time is %s seconds", idle_time)
         if idle_time > args.threshold:
             logger.info("Idle since %s seconds, making user active", args.threshold)
             make_user_active(button=args.button)

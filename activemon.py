@@ -37,6 +37,7 @@ def get_argument_parser() -> argparse.ArgumentParser:
         "-i",
         "--interval",
         dest="interval",
+        type=int,
         default=10,
         help="Duration of interval to check if idle (Default is 10 seconds).",
     )
@@ -44,8 +45,9 @@ def get_argument_parser() -> argparse.ArgumentParser:
         "-t",
         "--threshold",
         dest="threshold",
-        default=60,
-        help="Duration of threshold for idle detection (Default is 60 seconds).",
+        type=int,
+        default=120,
+        help="Duration of threshold for idle detection (Default is 120 seconds).",
     )
     parser.add_argument(
         "-b",
@@ -72,7 +74,6 @@ def get_idle_time() -> float:
 
 def make_user_active(button: str = "capslock") -> None:
     for _ in range(0, 2):
-        pyautogui.press(button, interval=1)
         pyautogui.press(button, interval=1)
 
 

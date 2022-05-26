@@ -1,4 +1,4 @@
-# windows-active-mon
+# activemon
 A simple script to monitor user idle and prevent screen from locking
 
 # Installation

@@ -7,7 +7,9 @@ import win32api
 
 __author__ = "Sajal N. Shrestha"
 __status__ = "Development"
-__version__ = "0.1"
+__version__ = "0.2"
+
+pyautogui.FAILSAFE = False
 
 
 def get_logger(debug: bool = False) -> logging.Logger:
